@@ -91,6 +91,8 @@ function UtmifyLink({ baseUrl, children, ...props }: UtmifyLinkProps) {
   );
 }
 
+const loadedImageCache = new Set<string>();
+
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
@@ -99,6 +101,9 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   referrerPolicy?: any;
   loading?: any;
   decoding?: any;
+  fetchPriority?: any;
+  width?: number | string;
+  height?: number | string;
 }
 
 function OptimizedImage({
@@ -106,21 +111,32 @@ function OptimizedImage({
   alt,
   className = '',
   fallbackIcon,
+  loading = 'eager',
+  decoding = 'async',
+  fetchPriority = 'auto',
+  referrerPolicy = 'no-referrer',
   ...props
 }: OptimizedImageProps) {
-  const [loaded, setLoaded] = useState(false);
+  const isCached = loadedImageCache.has(src);
+  const [loaded, setLoaded] = useState<boolean>(isCached);
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
+    if (imgRef.current && (imgRef.current.complete || loadedImageCache.has(src))) {
+      loadedImageCache.add(src);
       setLoaded(true);
     }
   }, [src]);
 
+  const handleLoad = () => {
+    loadedImageCache.add(src);
+    setLoaded(true);
+  };
+
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      {!loaded && (
-        <div className="skeleton absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-100 to-slate-50 animate-pulse flex items-center justify-center text-slate-300">
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+      {!loaded && !isCached && (
+        <div className="skeleton absolute inset-0 bg-slate-100/80 animate-pulse flex items-center justify-center text-slate-300 z-0">
           {fallbackIcon || <BookOpen className="w-8 h-8 opacity-25 animate-pulse" />}
         </div>
       )}
@@ -128,8 +144,13 @@ function OptimizedImage({
         ref={imgRef}
         src={src}
         alt={alt}
-        className={`${className} transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        onLoad={() => setLoaded(true)}
+        loading={loading}
+        decoding={decoding}
+        fetchPriority={fetchPriority}
+        referrerPolicy={referrerPolicy}
+        className={`${className} transition-opacity duration-200 ${loaded || isCached ? 'opacity-100' : 'opacity-0'} z-10`}
+        onLoad={handleLoad}
+        onError={handleLoad}
         {...props}
       />
     </div>
@@ -274,15 +295,17 @@ export default function App() {
           </p>
 
           {/* User Requested Image */}
-          <div className="my-4 flex justify-center">
-            <img 
+          <div className="my-4 flex justify-center w-full max-w-xl h-[280px] sm:h-[380px] relative">
+            <OptimizedImage 
               src="https://i.postimg.cc/5tSBMTCh/Chat-GPT-Image-5-de-jul-de-2026-13-34-29.png" 
               alt="Entrenamientos de Fútbol Sala" 
-              className="max-w-full sm:max-w-xl h-auto"
+              className="w-full h-full object-contain drop-shadow-xl"
               referrerPolicy="no-referrer"
               loading="eager"
               fetchPriority="high"
-              decoding="sync"
+              decoding="async"
+              width="600"
+              height="380"
             />
           </div>
 
@@ -435,12 +458,15 @@ export default function App() {
                   {/* Image container on top */}
                   {bonus.image ? (
                     <div className="flex items-center justify-center mb-5 h-[320px] overflow-hidden bg-slate-50 border border-slate-100/50 rounded-2xl relative w-full">
-                      <img 
+                      <OptimizedImage 
                         src={bonus.image} 
                         alt={bonus.title} 
                         className="max-h-full w-auto object-contain transform transition-transform duration-300 group-hover:scale-105"
                         referrerPolicy="no-referrer"
-                        loading="lazy"
+                        loading="eager"
+                        decoding="async"
+                        width="300"
+                        height="400"
                       />
                     </div>
                   ) : (
@@ -531,12 +557,16 @@ export default function App() {
                     key={`track1-${idx}`}
                     className="w-[240px] sm:w-[320px] h-[340px] sm:h-[450px] shrink-0 border border-slate-200/80 shadow-md hover:shadow-xl rounded-2xl overflow-hidden bg-white transition-all duration-300 transform hover:-translate-y-1.5 flex items-center justify-center p-2 relative"
                   >
-                    <img 
+                    <OptimizedImage 
                       src={imgUrl} 
                       alt={`Página de muestra ${idx + 1}`} 
                       className="w-full h-full object-contain bg-white rounded-lg select-none pointer-events-none"
                       referrerPolicy="no-referrer"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      width="320"
+                      height="450"
                     />
                   </div>
                 ))}
@@ -549,12 +579,16 @@ export default function App() {
                     key={`track2-${idx}`}
                     className="w-[240px] sm:w-[320px] h-[340px] sm:h-[450px] shrink-0 border border-slate-200/80 shadow-md hover:shadow-xl rounded-2xl overflow-hidden bg-white transition-all duration-300 transform hover:-translate-y-1.5 flex items-center justify-center p-2 relative"
                   >
-                    <img 
+                    <OptimizedImage 
                       src={imgUrl} 
                       alt={`Página de muestra ${idx + 1} - copia`} 
                       className="w-full h-full object-contain bg-white rounded-lg select-none pointer-events-none"
                       referrerPolicy="no-referrer"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      width="320"
+                      height="450"
                     />
                   </div>
                 ))}
@@ -618,12 +652,15 @@ export default function App() {
                     <div className="border-t border-slate-200 pt-4 mt-6 flex items-center gap-3">
                       {testimonial.avatarUrl ? (
                         <div className="w-10 h-10 rounded-full bg-slate-100 border border-emerald-200 relative overflow-hidden flex-shrink-0">
-                          <img
+                          <OptimizedImage
                             src={testimonial.avatarUrl}
                             alt={testimonial.name}
                             className="w-10 h-10 rounded-full object-cover"
                             referrerPolicy="no-referrer"
-                            loading="lazy"
+                            loading="eager"
+                            decoding="async"
+                            width="40"
+                            height="40"
                           />
                         </div>
                       ) : (
@@ -668,12 +705,15 @@ export default function App() {
                     <div className="border-t border-slate-200 pt-4 mt-6 flex items-center gap-3">
                       {testimonial.avatarUrl ? (
                         <div className="w-10 h-10 rounded-full bg-slate-100 border border-emerald-200 relative overflow-hidden flex-shrink-0">
-                          <img
+                          <OptimizedImage
                             src={testimonial.avatarUrl}
                             alt={testimonial.name}
                             className="w-10 h-10 rounded-full object-cover"
                             referrerPolicy="no-referrer"
-                            loading="lazy"
+                            loading="eager"
+                            decoding="async"
+                            width="40"
+                            height="40"
                           />
                         </div>
                       ) : (
@@ -730,13 +770,17 @@ export default function App() {
             </div>
 
             {/* Product image */}
-            <div className="flex justify-center mb-8 relative w-full">
-              <img
+            <div className="flex justify-center mb-8 relative w-full h-[280px] sm:h-[380px]">
+              <OptimizedImage
                 src="https://i.postimg.cc/5tSBMTCh/Chat-GPT-Image-5-de-jul-de-2026-13-34-29.png"
                 alt="Pack Metodológico Fútbol"
                 referrerPolicy="no-referrer"
                 className="max-w-full h-auto object-contain drop-shadow-2xl"
-                loading="lazy"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                width="600"
+                height="380"
               />
             </div>
 

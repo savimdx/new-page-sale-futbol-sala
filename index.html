@@ -25,8 +25,48 @@
     <!-- Parallel load Google Fonts to eliminate CSS @import blocking - optimized weights -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
 
-    <!-- Preload critical Hero mockup image -->
+    <!-- Preload critical Hero and Product mockup images for instant render -->
     <link rel="preload" as="image" href="https://i.postimg.cc/5tSBMTCh/Chat-GPT-Image-5-de-jul-de-2026-13-34-29.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://i.postimg.cc/9XDrVs5y/Screenshot-20260705-195033-Adobe-Acrobat.jpg" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://i.postimg.cc/wxn3BFgs/Screenshot-20260705-195044-Adobe-Acrobat.jpg" fetchpriority="high" />
+
+    <!-- Fast background preloader for all catalog images to eliminate scroll delays -->
+    <script>
+      (function() {
+        var catalogImages = [
+          "https://i.postimg.cc/5tSBMTCh/Chat-GPT-Image-5-de-jul-de-2026-13-34-29.png",
+          "https://i.postimg.cc/9XDrVs5y/Screenshot-20260705-195033-Adobe-Acrobat.jpg",
+          "https://i.postimg.cc/wxn3BFgs/Screenshot-20260705-195044-Adobe-Acrobat.jpg",
+          "https://i.postimg.cc/y62WNns3/Screenshot-20260705-195050-Adobe-Acrobat.jpg",
+          "https://i.postimg.cc/Pf0NqKTL/Screenshot-20260705-195056-Adobe-Acrobat.jpg",
+          "https://i.postimg.cc/BZB2Ld7w/100-Ejercicios-para-Desarrollar-la-Velocidad-en-el-Futbol-Sala.png",
+          "https://i.postimg.cc/GtdYgQtM/100-Ejercicios-con-Balon-para-Desarrollar-la-Resistencia-en-Futbol-Sala.png",
+          "https://i.postimg.cc/3NYpfBNC/60-Ejercicios-Fisicos-con-Solo-un-Pequeno-Equipamiento-en-Futbol-Sala.png",
+          "https://i.postimg.cc/KjxLpNjg/50-Ejercicios-Fisicos-con-Balon-en-Futbol-Sala.png",
+          "https://i.postimg.cc/XNk9GT1t/Fundamentos-Tacticos-Estrategicos-del-Futbol-Sala.png",
+          "https://i.postimg.cc/RVCKcX2d/Nociones-de-Preparacio-n-Fi-sica-en-el-Fu-tbol-Sala.png",
+          "https://i.postimg.cc/k4xKyZnh/100-Fichas-para-el-Entrenamiento-de-Futbol-Sala-en-Categoria-Senior.png",
+          "https://i.postimg.cc/6qtRb0qz/24-Plantillas-de-Entrenamientos-de-Futbol-Sala.png",
+          "https://i.postimg.cc/Y03tQsLS/Lecciones-en-video.png",
+          "https://i.postimg.cc/VNrGLw2s/Ejercicios-Adicionales-de-Futbol-Sala.png",
+          "https://i.postimg.cc/pVfg6Yqr/images.jpg",
+          "https://i.postimg.cc/DfrtMdBz/imageees.jpg",
+          "https://i.postimg.cc/jq7t599j/istockphoto-515225171-612x612.jpg"
+        ];
+        var prefetchImages = function() {
+          for (var i = 0; i < catalogImages.length; i++) {
+            var img = new Image();
+            img.referrerPolicy = "no-referrer";
+            img.src = catalogImages[i];
+          }
+        };
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(prefetchImages);
+        } else {
+          setTimeout(prefetchImages, 50);
+        }
+      })();
+    </script>
 
     <!-- Module preloads for fast client-side hydration -->
     <link rel="modulepreload" href="/src/main.tsx" />
