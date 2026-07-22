@@ -295,17 +295,17 @@ export default function App() {
           </p>
 
           {/* User Requested Image */}
-          <div className="my-4 flex justify-center w-full max-w-xl h-[280px] sm:h-[380px] relative">
+          <div className="my-6 flex justify-center w-full max-w-3xl sm:max-w-4xl min-h-[320px] sm:min-h-[460px] md:min-h-[520px] relative mx-auto">
             <OptimizedImage 
               src="https://i.postimg.cc/5tSBMTCh/Chat-GPT-Image-5-de-jul-de-2026-13-34-29.png" 
               alt="Entrenamientos de Fútbol Sala" 
-              className="w-full h-full object-contain drop-shadow-xl"
+              className="w-full h-full max-h-[550px] object-contain drop-shadow-2xl transition-transform duration-300 hover:scale-[1.02]"
               referrerPolicy="no-referrer"
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              width="600"
-              height="380"
+              width="800"
+              height="520"
             />
           </div>
 
@@ -770,17 +770,17 @@ export default function App() {
             </div>
 
             {/* Product image */}
-            <div className="flex justify-center mb-8 relative w-full h-[280px] sm:h-[380px]">
+            <div className="flex justify-center mb-8 relative w-full min-h-[300px] sm:min-h-[420px] md:min-h-[480px]">
               <OptimizedImage
                 src="https://i.postimg.cc/5tSBMTCh/Chat-GPT-Image-5-de-jul-de-2026-13-34-29.png"
                 alt="Pack Metodológico Fútbol"
                 referrerPolicy="no-referrer"
-                className="max-w-full h-auto object-contain drop-shadow-2xl"
+                className="max-w-full h-full max-h-[500px] object-contain drop-shadow-2xl transition-transform duration-300 hover:scale-[1.02]"
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
-                width="600"
-                height="380"
+                width="800"
+                height="480"
               />
             </div>
 
