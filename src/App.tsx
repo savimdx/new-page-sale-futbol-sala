@@ -378,55 +378,7 @@ export default function App() {
       </section>
 
 
-      {/* --- SECCIÓN 2: ¿QUÉ VAS A RECIBIR? --- */}
-      <section className="py-10 md:py-12 px-4 bg-slate-50/40 relative lazy-render-section">
-        <div className="absolute top-1/2 left-0 w-80 h-80 bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-8">
-            <span className="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-bold uppercase tracking-widest font-mono">
-              Biblioteca Completa
-            </span>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-              ¿Qué recibirás al registrarte hoy?
-            </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Un repertorio infinito de ejercicios y planificación futbolística detallada, diseñado meticulosamente por entrenadores federados para llevar tu juego al siguiente nivel.
-            </p>
-          </div>
-
-          {/* Grid of 6 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {RECEIVE_CARDS.map((card, idx) => (
-              <div
-                key={card.id}
-                className="bg-white border border-slate-200 hover:border-emerald-500/30 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between items-center text-center group relative overflow-hidden"
-              >
-                {/* Visual Accent glow line */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <div className="flex flex-col items-center w-full">
-                  {/* Tag on top */}
-                  <div className="flex justify-center items-center mb-5 w-full">
-                    <span className={`text-[8px] px-2.5 py-1 rounded font-black uppercase tracking-wider border ${card.accent}`}>
-                      {card.tag}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl font-black text-slate-900 group-hover:text-emerald-600 transition-colors leading-snug tracking-tight">
-                    {card.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 mt-3 leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
 
 
 
