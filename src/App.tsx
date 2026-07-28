@@ -64,28 +64,50 @@ const PRODUCT_IMAGES = [
   "https://i.postimg.cc/Pf0NqKTL/Screenshot-20260705-195056-Adobe-Acrobat.jpg"
 ];
 
+declare global {
+  interface Window {
+    redirectWithParams: (destination: string) => void;
+  }
+}
+
+export function redirectWithParams(destination: string) {
+  const currentParams = window.location.search;
+
+  if (!currentParams) {
+    window.location.href = destination;
+    return;
+  }
+
+  if (destination.includes("?")) {
+    window.location.href = destination + "&" + currentParams.substring(1);
+  } else {
+    window.location.href = destination + currentParams;
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.redirectWithParams = redirectWithParams;
+}
+
 interface UtmifyLinkProps {
   baseUrl: string;
   children?: React.ReactNode;
   className?: string;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   [key: string]: any;
 }
 
-function UtmifyLink({ baseUrl, children, ...props }: UtmifyLinkProps) {
-  const linkRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (linkRef.current) {
-      linkRef.current.href = baseUrl;
+function UtmifyLink({ baseUrl, children, onClick, ...props }: UtmifyLinkProps) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (onClick) {
+      onClick(e);
     }
-  }, [baseUrl]);
-
-  // Cleanly delete href from props so React does not manage or overwrite it
-  const otherProps = { ...props };
-  delete otherProps.href;
+    redirectWithParams(baseUrl);
+  };
 
   return (
-    <a ref={linkRef} {...otherProps}>
+    <a href={baseUrl} onClick={handleClick} {...props}>
       {children}
     </a>
   );
